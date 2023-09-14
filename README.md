@@ -44,3 +44,68 @@ make create-migration name={migration_name}
 ```bash
 make migrate-up
 ```
+
+## ER図
+
+```mermaid
+erDiagram
+
+tables {
+    string id
+    string name
+}
+
+customers {
+    string id
+    string table_id
+    datetime checked_in_at
+    datetime checked_out_at
+}
+
+categories {
+    string id
+    string name
+}
+
+items {
+    string id
+    string name
+    string category_id
+    int price
+    bool available
+}
+
+available_options {
+    string item_id
+    string item_option_id
+}
+
+item_options {
+    string id
+    string name
+}
+
+order_items {
+    string id
+    string customer_id
+    string item_id
+    int    price
+    datetime ordered_at
+    datetime delivered_at
+	datetime cancelled_at
+}
+
+order_item_options {
+    string order_item_id
+    string item_option_id
+}
+
+    tables ||--o{ customers: ""
+    categories ||--o{ items: "" 
+    customers ||--o{ order_items: ""
+    items ||--o{ available_options: ""
+    item_options ||--o{ available_options: ""
+    order_items ||--o{ order_item_options: ""
+    items ||--o{ order_items: ""
+    item_options ||--o{ order_item_options: ""
+```
