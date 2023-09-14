@@ -1,8 +1,10 @@
 SHELL=/bin/bash
 
 DC = docker-compose
-MIGRATE_OPT_DEV ?= -env=development -config ./db/migrations/dbconfig.yaml
+MIGRATE_OPT_DEV ?= -env development -config db/migrations/config/dbconfig.yaml
 
+# Include .env file
+include .env
 
 .PHONY: help
 help: ## Display this help screen
@@ -16,17 +18,17 @@ install: ## Install sql-migrate tool
 .PHONY: migrate-up
 migrate-up: ## Apply all up migrations
 	@echo "Applying up migrations..."
-	@sql-migrate up
+	@set -a; source .env; set +a; sql-migrate up $(MIGRATE_OPT_DEV)
 
 .PHONY: migrate-down
 migrate-down: ## Apply all down migrations
 	@echo "Applying down migrations..."
-	@sql-migrate down
+	@set -a; source .env; set +a; sql-migrate down $(MIGRATE_OPT_DEV)
 
 .PHONY: migrate-status
 migrate-status: ## Show migration status
 	@echo "Showing migration status..."
-	@sql-migrate status
+	set -a; source .env; set +a; sql-migrate status $(MIGRATE_OPT_DEV)
 
 .PHONY: create-migration
 create-migration: ## Create a new migration. Use name=<name_of_migration>
@@ -34,7 +36,7 @@ create-migration: ## Create a new migration. Use name=<name_of_migration>
 ifndef name
 	$(error name is undefined. Usage: make create-migration name=<name_of_migration>)
 endif
-	@touch db/migrations/`date +"%Y%m%d%H%M%S"`_$(name).sql
+	@set -a; source .env; set +a; sql-migrate new $(name) $(MIGRATE_OPT_DEV)
 
 .PHONY: up
 up: ## Start all services (background)
@@ -45,3 +47,8 @@ up: ## Start all services (background)
 down: ## Stop all services
 	@echo "Stopping services..."
 	$(DC) down -v
+
+.PHONY: logs
+logs: ## Show logs
+	@echo "Showing logs..."
+	$(DC) logs -f
