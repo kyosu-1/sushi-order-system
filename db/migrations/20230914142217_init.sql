@@ -91,8 +91,8 @@ CREATE TABLE order_item_options (
 
 DROP TABLE order_item_options;
 DROP TABLE order_items;
-DROP TABLE item_options;
 DROP TABLE available_options;
+DROP TABLE item_options;
 DROP TABLE items;
 DROP TABLE categories;
 DROP TABLE customers;
