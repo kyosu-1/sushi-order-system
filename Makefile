@@ -1,6 +1,8 @@
 SHELL=/bin/bash
 
+DC = docker-compose
 MIGRATE_OPT_DEV ?= -env=development -config ./db/migrations/dbconfig.yaml
+
 
 .PHONY: help
 help: ## Display this help screen
@@ -42,4 +44,4 @@ up: ## Start all services (background)
 .PHONY: down
 down: ## Stop all services
 	@echo "Stopping services..."
-	$(DC) down
+	$(DC) down -v
