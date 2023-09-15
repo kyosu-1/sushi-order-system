@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 import com.example.sushiordersystem.service.CustomerService
 
-data class CustomerRequest(
+data class CreateCustomerRequest(
     val tableId: UUID,
 )
 
-data class CustomerResponse(
+data class CreateCustomerResponse(
     val customerId: UUID,
     val checkedInAt: Long,
 )
@@ -23,9 +23,9 @@ data class CustomerResponse(
 class CustomerController(private val customerService: CustomerService) {
 
     @PostMapping
-    fun createCustomer(@RequestBody request: CustomerRequest): CustomerResponse {
+    fun createCustomer(@RequestBody request: CreateCustomerRequest): CreateCustomerResponse {
         val customer = customerService.createCustomer(request.tableId)
-        return CustomerResponse(
+        return CreateCustomerResponse(
             customerId = customer.customerId,
             checkedInAt = customer.checkedInAt.toEpochMilli(),
         )
