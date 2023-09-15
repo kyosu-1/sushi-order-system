@@ -1,7 +1,13 @@
 package com.example.sushiordersystem.controller
 
 import java.util.UUID
-import org.springframework.web.bind.annotation.*
+
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RequestMapping
+
+import com.example.sushiordersystem.service.CustomerService
 
 data class CustomerRequest(
     val tableId: UUID,
@@ -14,12 +20,14 @@ data class CustomerResponse(
 
 @RestController
 @RequestMapping("/customers")
-class CustomerController {
+class CustomerController(private val customerService: CustomerService) {
+
     @PostMapping
     fun createCustomer(@RequestBody request: CustomerRequest): CustomerResponse {
+        val customer = customerService.createCustomer(request.tableId)
         return CustomerResponse(
-            customerId = UUID.randomUUID(),
-            checkedInAt = System.currentTimeMillis(),
+            customerId = customer.customerId,
+            checkedInAt = customer.checkedInAt.toEpochMilli(),
         )
     }
 }
