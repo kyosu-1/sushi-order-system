@@ -1,4 +1,4 @@
-package com.example.sushiordersystem.domain.model
+package com.example.sushiordersystem.domain
 
 import java.util.UUID
 import java.time.Instant
