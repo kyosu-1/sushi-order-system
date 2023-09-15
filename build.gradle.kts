@@ -21,10 +21,9 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
-    implementation("mysql:mysql-connector-java:8.0.27")
+    implementation("mysql:mysql-connector-java:8.0.28")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2")
 }

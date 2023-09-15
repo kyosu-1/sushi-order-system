@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import com.example.sushiordersystem.service.CustomerService
 
 data class CreateCustomerRequest(
-    val tableId: UUID,
+    val tableId: String,
 )
 
 data class CreateCustomerResponse(
-    val customerId: UUID,
+    val customerId: String,
     val checkedInAt: Long,
 )
 

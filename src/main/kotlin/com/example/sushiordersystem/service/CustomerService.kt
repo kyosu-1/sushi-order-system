@@ -12,10 +12,10 @@ import com.example.sushiordersystem.repository.CustomerRepository
 @Service
 class CustomerService(private val customerRepository: CustomerRepository) {
 
-    fun createCustomer(tableId: UUID): Customer {
+    fun createCustomer(tableId: String): Customer {
         val customer = Customer(
-            customerId = UUID.randomUUID(),
-            tableId = tableId,
+            customerId = UUID.randomUUID().toString(),
+            tableId = tableId.toString(),
             checkedInAt = Instant.now(),
         )
         customerRepository.insert(customer)
