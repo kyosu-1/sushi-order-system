@@ -52,3 +52,15 @@ down: ## Stop all services
 logs: ## Show logs
 	@echo "Showing logs..."
 	$(DC) logs -f
+
+.PHONY: seed
+seed: ## Seed the database
+	@echo "Seeding the database..."
+	@mysql -u $(DB_USER) -p$(DB_PASSWORD) -h $(DB_HOST) -P $(DB_PORT) --protocol=tcp $(DB_NAME) < db/test/seed.sql
+	@echo "Done seeding."
+
+.PHONY: cleanup
+cleanup: ## delete all db data
+	@echo "Deleting all db data..."
+	@mysql -u $(DB_USER) -p$(DB_PASSWORD) -h $(DB_HOST) -P $(DB_PORT) --protocol=tcp $(DB_NAME) < db/test/cleanup.sql
+	@echo "Done deleting db data."
