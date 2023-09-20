@@ -19,14 +19,14 @@ interface CustomerMapper {
     @Select("""
         SELECT EXISTS (
             SELECT 1
-            FROM customer
+            FROM customers
             WHERE table_id = #{tableId}
         )
     """)
     fun isValidTable(tableId: String): Boolean
 
     @Insert("""
-        INSERT INTO customer (id, table_id, checked_in_at)
+        INSERT INTO customers (id, table_id, checked_in_at)
         VALUES (#{id}, #{tableId}, #{checkedInAt})
     """)
     fun insertCustomer(customer: CustomerEntity): Int
