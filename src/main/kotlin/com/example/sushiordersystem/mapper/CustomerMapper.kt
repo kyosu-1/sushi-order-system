@@ -16,15 +16,6 @@ data class CustomerEntity(
 @Component
 interface CustomerMapper {
 
-    @Select("""
-        SELECT EXISTS (
-            SELECT 1
-            FROM customers
-            WHERE table_id = #{tableId}
-        )
-    """)
-    fun isValidTable(tableId: String): Boolean
-
     @Insert("""
         INSERT INTO customers (id, table_id, checked_in_at)
         VALUES (#{id}, #{tableId}, #{checkedInAt})

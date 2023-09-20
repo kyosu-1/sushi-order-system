@@ -8,13 +8,10 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class CustomerRepositoryImpl(private val customerMapper: CustomerMapper) : CustomerRepository {
-    override fun isValidTable(tableId: String): Boolean {
-        return customerMapper.isValidTable(tableId)
-    }
 
     override fun createCustomer(customer: Customer): Int {
         val customerEntity = CustomerEntity(
-                id = customer.customerId,
+                id = customer.id,
                 tableId = customer.tableId,
                 checkedInAt = customer.checkedInAt
         )

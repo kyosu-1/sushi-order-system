@@ -1,7 +1,7 @@
 package com.example.sushiordersystem.controller
 
 import com.example.sushiordersystem.service.CustomerService
-import com.example.sushiordersystem.service.TableNotFoundException
+import com.example.sushiordersystem.service.TableService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -24,8 +24,10 @@ data class CreateCustomerResponse(
 
 @RestController
 @RequestMapping("/customers")
-class CustomerController(private val customerService: CustomerService) {
-
+class CustomerController(
+        private val customerService: CustomerService,
+        private val tableService: TableService,
+) {
     @ApiResponses(
             value = [
                 ApiResponse(responseCode = "201", description = "Created",
@@ -36,20 +38,19 @@ class CustomerController(private val customerService: CustomerService) {
     )
     @PostMapping
     fun createCustomer(@RequestBody request: CreateCustomerRequest): ResponseEntity<Any> {
-        return try {
-            val customer = customerService.createCustomer(request.tableId)
-            ResponseEntity.status(201).body(
-                    CreateCustomerResponse(
-                            customerId = customer.customerId,
-                            checkedInAt = customer.checkedInAt.toEpochMilli(),
-                    )
-            )
-        } catch (e: TableNotFoundException) {
-            ResponseEntity.badRequest().body(
+        if (!tableService.doesTableExist(request.tableId)) {
+            return ResponseEntity.badRequest().body(
                     ErrorResponse(
                             message = "Invalid table_id",
                     )
             )
         }
+        val customer = customerService.createCustomer(request.tableId)
+        return ResponseEntity.status(201).body(
+                CreateCustomerResponse(
+                        customerId = customer.id,
+                        checkedInAt = customer.checkedInAt.toEpochMilli(),
+                )
+        )
     }
 }
