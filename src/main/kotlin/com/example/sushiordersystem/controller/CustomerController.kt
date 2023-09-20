@@ -1,13 +1,12 @@
 package com.example.sushiordersystem.controller
 
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.RequestMapping
-
 import com.example.sushiordersystem.service.CustomerService
 import com.example.sushiordersystem.service.TableNotFoundException
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 data class CreateCustomerRequest(
         val tableId: String,

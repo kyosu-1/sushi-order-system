@@ -1,12 +1,10 @@
 package com.example.sushiordersystem.service
 
-import java.time.Instant
-import java.util.UUID
-
-import org.springframework.stereotype.Service
-
 import com.example.sushiordersystem.domain.Customer
 import com.example.sushiordersystem.repository.CustomerRepository
+import org.springframework.stereotype.Service
+import java.time.Instant
+import java.util.*
 
 @Service
 class CustomerService(private val customerRepository: CustomerRepository) {

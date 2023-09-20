@@ -1,9 +1,9 @@
 package com.example.sushiordersystem.repository.impl
 
 import com.example.sushiordersystem.domain.Customer
+import com.example.sushiordersystem.mapper.CustomerEntity
 import com.example.sushiordersystem.mapper.CustomerMapper
 import com.example.sushiordersystem.repository.CustomerRepository
-import com.example.sushiordersystem.mapper.CustomerEntity
 import org.springframework.stereotype.Repository
 
 @Repository
