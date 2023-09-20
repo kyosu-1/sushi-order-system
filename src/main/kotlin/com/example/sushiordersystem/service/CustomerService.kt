@@ -16,9 +16,9 @@ class CustomerService(private val customerRepository: CustomerRepository) {
             throw TableNotFoundException()
         }
         val customer = Customer(
-            customerId = UUID.randomUUID().toString(),
-            tableId = tableId,
-            checkedInAt = Instant.now(),
+                customerId = UUID.randomUUID().toString(),
+                tableId = tableId,
+                checkedInAt = Instant.now(),
         )
         customerRepository.createCustomer(customer)
         return customer

@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import com.example.sushiordersystem.service.CustomerService
 
 data class CreateCustomerRequest(
-    val tableId: String,
+        val tableId: String,
 )
 
 data class CreateCustomerResponse(
-    val customerId: String,
-    val checkedInAt: Long,
+        val customerId: String,
+        val checkedInAt: Long,
 )
 
 @RestController
@@ -26,8 +26,8 @@ class CustomerController(private val customerService: CustomerService) {
     fun createCustomer(@RequestBody request: CreateCustomerRequest): CreateCustomerResponse {
         val customer = customerService.createCustomer(request.tableId)
         return CreateCustomerResponse(
-            customerId = customer.customerId,
-            checkedInAt = customer.checkedInAt.toEpochMilli(),
+                customerId = customer.customerId,
+                checkedInAt = customer.checkedInAt.toEpochMilli(),
         )
     }
 }
