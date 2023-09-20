@@ -29,6 +29,10 @@ make migrate-up
 
 4: アプリケーションサーバーを起動する
 
+5: OpenAPIを確認する
+
+http://localhost:8080/swagger-ui/index.html
+
 ## テーブルの追加・変更
 
 1: Migration Fileを作成する
@@ -101,7 +105,7 @@ order_item_options {
 }
 
     tables ||--o{ customers: ""
-    categories ||--o{ items: "" 
+    categories ||--o{ items: ""
     customers ||--o{ order_items: ""
     items ||--o{ available_options: ""
     item_options ||--o{ available_options: ""
