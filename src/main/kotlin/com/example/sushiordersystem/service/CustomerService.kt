@@ -10,6 +10,7 @@ import java.util.*
 class CustomerService(
         private val customerRepository: CustomerRepository,
 ) {
+
     fun createCustomer(tableId: String): Customer {
         val customer = Customer(
                 id = UUID.randomUUID().toString(),

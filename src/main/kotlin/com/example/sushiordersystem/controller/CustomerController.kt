@@ -38,10 +38,19 @@ class CustomerController(
     )
     @PostMapping
     fun createCustomer(@RequestBody request: CreateCustomerRequest): ResponseEntity<Any> {
+        // テーブルが存在しない場合
         if (!tableService.doesTableExist(request.tableId)) {
             return ResponseEntity.badRequest().body(
                     ErrorResponse(
                             message = "Invalid table_id",
+                    )
+            )
+        }
+        // テーブルが利用中の場合
+        if (!tableService.isTableAvailable(request.tableId)) {
+            return ResponseEntity.badRequest().body(
+                    ErrorResponse(
+                            message = "Table is not available",
                     )
             )
         }
