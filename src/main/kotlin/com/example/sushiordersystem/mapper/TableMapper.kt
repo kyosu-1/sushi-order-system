@@ -4,9 +4,9 @@ import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Select
 import org.springframework.stereotype.Component
 
-data class TableEntity (
-    val id: String,
-    val name: String,
+data class TableEntity(
+        val id: String,
+        val name: String,
 )
 
 @Mapper

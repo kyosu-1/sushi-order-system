@@ -1,10 +1,10 @@
 package com.example.sushiordersystem.repository.impl
 
 import com.example.sushiordersystem.domain.Table
-import org.springframework.stereotype.Repository
 import com.example.sushiordersystem.mapper.TableMapper
-import com.example.sushiordersystem.repository.TableRepository
 import com.example.sushiordersystem.repository.TableNotFoundException
+import com.example.sushiordersystem.repository.TableRepository
+import org.springframework.stereotype.Repository
 
 
 @Repository

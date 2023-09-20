@@ -2,7 +2,6 @@ package com.example.sushiordersystem.service
 
 import com.example.sushiordersystem.domain.Customer
 import com.example.sushiordersystem.repository.CustomerRepository
-import com.example.sushiordersystem.repository.TableRepository
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
