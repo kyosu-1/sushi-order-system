@@ -1,6 +1,7 @@
 package com.example.sushiordersystem.mapper
 
 import org.apache.ibatis.annotations.Insert
+import org.apache.ibatis.annotations.Select
 import org.apache.ibatis.annotations.Mapper
 import org.springframework.stereotype.Component
 import java.time.Instant
@@ -20,4 +21,10 @@ interface CustomerMapper {
         VALUES (#{id}, #{tableId}, #{checkedInAt})
     """)
     fun insertCustomer(customer: CustomerEntity): Int
+
+    @Select("""
+        SELECT * FROM customers
+        WHERE table_id = #{tableId}
+    """)
+    fun selectCustomersByTableId(tableId: String): List<CustomerEntity>
 }

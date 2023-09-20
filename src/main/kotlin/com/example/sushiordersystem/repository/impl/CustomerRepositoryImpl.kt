@@ -17,4 +17,15 @@ class CustomerRepositoryImpl(private val customerMapper: CustomerMapper) : Custo
         )
         return customerMapper.insertCustomer(customerEntity)
     }
+
+    override fun getCustomersByTableId(tableId: String): List<Customer> {
+        val customerEntities = customerMapper.selectCustomersByTableId(tableId)
+        return customerEntities.map { customerEntity ->
+            Customer(
+                    id = customerEntity.id,
+                    tableId = customerEntity.tableId,
+                    checkedInAt = customerEntity.checkedInAt
+            )
+        }
+    }
 }
