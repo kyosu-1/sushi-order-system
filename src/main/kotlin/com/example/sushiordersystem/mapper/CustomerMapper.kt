@@ -3,13 +3,15 @@ package com.example.sushiordersystem.mapper
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Select
 import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.Update
 import org.springframework.stereotype.Component
 import java.time.Instant
 
 data class CustomerEntity(
         val id: String,
         val tableId: String,
-        val checkedInAt: Instant
+        val checkedInAt: Instant,
+        val checkedOutAt: Instant? = null,
 )
 
 @Mapper
@@ -27,4 +29,11 @@ interface CustomerMapper {
         WHERE table_id = #{tableId}
     """)
     fun selectCustomersByTableId(tableId: String): List<CustomerEntity>
+
+    @Update("""
+        UPDATE customers
+        SET checked_out_at = #{checkedOutAt}
+        WHERE id = #{id}
+    """)
+    fun updateCustomer(customer: CustomerEntity): Int
 }

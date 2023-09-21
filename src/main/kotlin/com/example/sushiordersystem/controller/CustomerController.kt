@@ -22,6 +22,15 @@ data class CreateCustomerResponse(
         val checkedInAt: Long,
 )
 
+data class CustomerCheckoutRequest(
+        val customerId: String,
+)
+
+data class CustomerCheckoutResponse(
+        val customerId: String,
+        val checkedOutAt: Long,
+)
+
 @RestController
 @RequestMapping("/customers")
 class CustomerController(
