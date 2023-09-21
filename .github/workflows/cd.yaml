@@ -1,0 +1,85 @@
+name: Build-Push-Deploy
+
+on:
+  # mainにpushされたら実行する
+  push:
+    branches:
+      - main
+
+env:
+    ROLE_TO_ASSUME: arn:aws:iam::738925651667:role/sushi-order-system-github-actions
+    ROLE_SESSION_NAME_PREFIX: sushi-order-system-github-actions
+    ECR_REPOSITORY_NAME: sushi-order-system
+    APP_RUNNER_SERVICE_NAME: sushi-order-system
+    APP_RUNNER_ACCESS_ROLE: arn:aws:iam::738925651667:role/sushi-order-system-apprunner-access-role-for-ECR
+    APP_RUNNER_CONTAINER_PORT: "8080"
+
+jobs:
+  # TODO: CIの結果が成功したら実行するようにしたい
+  build-and-push:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.build-app.outputs.image }}
+    permissions:
+      id-token: write
+      contents: read
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure aws
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-northeast-1
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+          role-session-name: ${{ env.ROLE_SESSION_NAME_PREFIX }}_${{ github.job }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and Push Image
+        id: build-app
+        run: |
+          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_NAME }}:${{ github.sha }}
+          docker build -t $IMAGE_URI .
+          docker push $IMAGE_URI
+
+  deploy:
+    needs: [build-and-push]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    timeout-minutes: 60
+    steps:
+      - name: Configure aws
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-northeast-1
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+          role-session-name: ${{ env.ROLE_SESSION_NAME_PREFIX }}_${{ github.job }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Set Image URI
+        id: set-image-uri
+        run: |
+          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_NAME }}:${{ github.sha }}
+          echo "image=$IMAGE_URI" >> $GITHUB_OUTPUT
+
+      - name: Deploy to App Runner Image
+        id: deploy-apprunner
+        uses: awslabs/amazon-app-runner-deploy@main
+        with:
+          service: ${{ env.APP_RUNNER_SERVICE_NAME }}
+          region: ap-northeast-1
+          image: ${{ steps.set-image-uri.outputs.image }}
+          access-role-arn: ${{ env.APP_RUNNER_ACCESS_ROLE }}
+          port: ${{ env.APP_RUNNER_CONTAINER_PORT }}
+          cpu : 1
+          memory : 2
+          wait-for-service-stability-seconds: 600
